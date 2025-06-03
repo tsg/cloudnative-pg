@@ -131,8 +131,9 @@ func (r *instanceClientImpl) getReplicaStatusFromPodViaHTTP(
 		}
 
 		// If the pod answered with a not ok status, it is pointless to retry
-		var statuserror StatusError
-		if errors.As(err, &statuserror) {
+		var statuserror *StatusError
+		var urlerror *neturl.Error
+		if errors.As(err, &statuserror) || errors.As(err, &urlerror) {
 			return false
 		}
 
